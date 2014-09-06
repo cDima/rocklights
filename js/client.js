@@ -27,7 +27,7 @@ ws.onmessage = function (event) {
 
   var setColor = setTimeout(function() {
       document.body.style.backgroundColor=color;
-    }, clientTimeDiff + 1000)
+    }, 1000)
 
 
   document.querySelector('#clientTime').innerHTML = clientTime.format();
