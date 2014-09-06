@@ -1,34 +1,18 @@
 <html>
   <head>
-    <style>
-      body {
-        font-family: "Helvetica Neue", helvetica, arial;
-        padding: 15px;
-      }
-
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      ul li {
-        line-height: 1.4;
-      }
-    </style>
-
-    <script>
-      var host = location.origin.replace(/^http/, 'ws')
-      var ws = new WebSocket(host);
-      ws.onmessage = function (event) {
-        var li = document.createElement('li');
-        li.innerHTML = JSON.parse(event.data);
-        document.querySelector('#pings').appendChild(li);
-      };
-    </script>
+    <link rel="stylesheet" href="styles/style.css" />
   </head>
   <body>
-    <h1>Pings</h1>
-    <ul id='pings'></ul>
+    <ul>
+      <li>Client Time:  <span id='clientTime'></span></li>
+      <li>Server Time: <span id='serverTime'></span> (lag: <span id='serverTimeDiff'></span>ms)</li>
+      <li>Server Aprx: <span id='serverApprox'></span> (diff: <span id='clientTimeDiff'></span>)</li>
+      <li>Client count: <span id='clientCount'></span></li>
+      <li><span id='color'></span></li>
+    </ul>    
+    <script src="js/moment.js"></script>
+    <script src="js/client.js"></script>
+    <script>
+    </script>
   </body>
 </html>

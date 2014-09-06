@@ -14,15 +14,52 @@ console.log("http server listening on %d", port)
 var wss = new WebSocketServer({server: server})
 console.log("websocket server created")
 
-wss.on("connection", function(ws) {
-  var id = setInterval(function() {
-    ws.send(JSON.stringify(new Date()), function() {  })
+var globalCounter = 0;
+var clientCount = 0; // poor-mans non-scalable db
+var color = getRandomColor();
+var allClients = {};
+
+var colorLoop = setInterval(function() {
+  	color = getRandomColor();
+
+  	var serverData = [new Date(), clientCount, color];
+
+  	// send to all clients
+	for (conn in allClients)
+		allClients[conn].send(JSON.stringify(serverData), function() {  });
+  
   }, 1000)
 
-  console.log("websocket connection open")
+wss.on("connection", function(ws) {
+
+
+  /*
+  var id = setInterval(function() {
+  	var serverData = [new Date(), clientCount, color];
+    ws.send(JSON.stringify(serverData), function() {  })
+  }, 1000)
+  */
+
+  clientCount++;
+  var id = globalCounter++;
+  ws.id = id;
+  allClients[ws.id] = ws;
+
+  console.log("websocket connection open " + clientCount)
 
   ws.on("close", function() {
-    console.log("websocket connection close")
-    clearInterval(id)
+    clientCount--;
+    delete allClients[ws.id];
+    console.log("websocket connection closed, total " + clientCount)
+    //clearInterval(id)
   })
 })
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
