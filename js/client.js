@@ -19,7 +19,7 @@ ws.onmessage = function (event) {
   //li.innerHTML = JSON.parse(event.data);
 
   var clientTime = moment();
-  var serverTimeDiff = serverTime.diff(timeBefore); // minus ping default time
+  var serverTimeDiff = 1000 - serverTime.diff(timeBefore); // minus ping default time
   var clientTimeDiff = clientTime.diff(serverTime);
   var serverApprox = serverTime.add(serverTimeDiff);
 
