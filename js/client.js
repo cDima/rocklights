@@ -2,7 +2,7 @@
 var host = location.origin.replace(/^http/, 'ws')
 var ws = new WebSocket(host);
 
-moment.defaultFormat = 'MMM Do, h:mm:ss:SSS a';
+moment.defaultFormat = 'h:mm:ss:SSS a';
 
 var timeBefore = new moment();
 document.querySelector('#serverTime').innerHTML = timeBefore.format();
