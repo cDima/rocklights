@@ -2,7 +2,7 @@
 var host = location.origin.replace(/^http/, 'ws')
 var ws = new WebSocket(host);
 
-moment.defaultFormat = 'MMM Do YYYY, h:mm:ss:SSS a';
+moment.defaultFormat = 'MMM Do, h:mm:ss:SSS a';
 
 var timeBefore = new moment();
 document.querySelector('#serverTime').innerHTML = timeBefore.format();
@@ -19,7 +19,7 @@ ws.onmessage = function (event) {
   //li.innerHTML = JSON.parse(event.data);
 
   var clientTime = moment();
-  var serverTimeDiff = serverTime.diff(timeBefore) - 1000; // minus ping default time
+  var serverTimeDiff = serverTime.diff(timeBefore); // minus ping default time
   var clientTimeDiff = clientTime.diff(serverTime);
   var serverApprox = serverTime.add(serverTimeDiff);
 
@@ -33,7 +33,7 @@ ws.onmessage = function (event) {
   document.querySelector('#clientTime').innerHTML = clientTime.format();
   document.querySelector('#serverTime').innerHTML =  serverTime.format();
   //document.querySelector('#serverApprox').innerHTML = serverApprox.format();  
-  document.querySelector('#serverTimeDiff').innerHTML = serverTimeDiff;  
+  document.querySelector('#lag').innerHTML = serverTimeDiff;  
   document.querySelector('#clientTimeDiff').innerHTML = clientTimeDiff;  
   document.querySelector('#clientCount').innerHTML = clientCount;
   document.querySelector('#color').innerHTML = color;
