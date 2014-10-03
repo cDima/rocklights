@@ -1,6 +1,6 @@
-# Node.js Websocket Test
+# Rocklights concept app by Dmitry Sadakov
 
-A tiny demo using the [einaros/ws](http://einaros.github.io/ws/) WebSockets implementation.
+A node.js app for synced lights using the [einaros/ws](http://einaros.github.io/ws/) WebSockets implementation.
 
 # Running Locally
 
@@ -16,3 +16,5 @@ heroku create
 git push heroku master
 heroku open
 ```
+
+![](https://github.com/cDima/rocklights/blob/master/photo.PNG)
