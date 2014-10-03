@@ -35,8 +35,8 @@ ws.onmessage = function (event) {
   document.querySelector('#clientTime').innerHTML = clientTime.format();
   document.querySelector('#serverTime').innerHTML =  serverTime.format();
   //document.querySelector('#serverApprox').innerHTML = serverApprox.format();  
-  document.querySelector('#lag').innerHTML = serverTimeDiff;  
-  document.querySelector('#clientTimeDiff').innerHTML = clientTimeDiff;  
+  //document.querySelector('#lag').innerHTML = serverTimeDiff;  
+  //document.querySelector('#clientTimeDiff').innerHTML = clientTimeDiff;  
   document.querySelector('#clientCount').innerHTML = clientCount;
   document.querySelector('#color').innerHTML = color;
 
