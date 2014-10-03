@@ -69,17 +69,24 @@ ws.onmessage = function (event) {
     document.querySelector('#drawlag').innerHTML = drawTime;
   }
 
-  function draw(){
-    
-    //drawCircle(1, 1);
-    //return;
+  function getRadius(){
 
-    radius++;
-    if (radius > (canvas.width)) {
-      radius = 0;
-      context.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    
+    var currentTime = new Date();
+    // repeat every 4 secs:
+    var loopSeconds = 4;
+    var secondsFromLoop = currentTime.getSeconds() % loopSeconds;
+
+    var milliseconds = ((secondsFromLoop * 1000) + currentTime.getMilliseconds());
+    var animationPercent = milliseconds / (loopSeconds * 1000); 
+
+    return canvas.width * animationPercent;
+
+  }
+
+  function draw(){
+
+    radius = getRadius();
+
     clear();
     drawCircle(radius, 40, "white");
 
