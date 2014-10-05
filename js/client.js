@@ -88,7 +88,7 @@ function timerHit(){
 
 function getRadius(){
 
-  var currentTime = window.kinda_ntp.time();
+  var currentTime = new Date(window.kinda_ntp.time());
   // repeat every 4 secs:
   var loopSeconds = 4;
   var secondsFromLoop = currentTime.getSeconds() % loopSeconds;
