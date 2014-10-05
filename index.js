@@ -19,19 +19,20 @@ var clientCount = 0; // poor-mans non-scalable db
 var color = getRandomColor();
 var allClients = {};
 
-var colorLoop = setInterval(function() {
+function colorLoop() {
   	color = getRandomColor();
 
   	var serverData = [new Date(), clientCount, color];
 
   	// send to all clients
-	for (conn in allClients)
-		allClients[conn].send(JSON.stringify(serverData), function() {  });
-  
-  }, 1000)
+	  for (conn in allClients)
+		  allClients[conn].send(JSON.stringify(serverData));
+
+}
+
+//setInterval(colorLoop, 1000);
 
 wss.on("connection", function(ws) {
-
 
   /*
   var id = setInterval(function() {
@@ -45,7 +46,26 @@ wss.on("connection", function(ws) {
   ws.id = id;
   allClients[ws.id] = ws;
 
-  console.log("websocket connection open " + clientCount)
+  console.log("websocket connection open, total: " + clientCount)
+
+  ws.on("message", function(message) {
+    console.log("websocket connection message: " + message)
+
+    var data = JSON.parse(message);
+
+
+    if (data.type === "get_time"){
+      // respond with date
+
+    color = getRandomColor();
+
+    var serverData = JSON.stringify({ server_transmit_time : Date.now(),
+                                client_transmit_time : data.client_transmit_time, 
+                                clientCount: clientCount, color: color });
+      ws.send(serverData);
+      console.log(serverData);
+    }
+  })
 
   ws.on("close", function() {
     clientCount--;
