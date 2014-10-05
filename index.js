@@ -56,10 +56,8 @@ wss.on("connection", function(ws) {
 
     if (data.type === "get_time"){
       // respond with date
-
-    color = getRandomColor();
-
-    var serverData = JSON.stringify({ server_transmit_time : Date.now(),
+      color = getRandomColor();
+      var serverData = JSON.stringify({ server_transmit_time : Date.now(),
                                 client_transmit_time : data.client_transmit_time, 
                                 clientCount: clientCount, color: color });
       ws.send(serverData);

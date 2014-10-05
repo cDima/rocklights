@@ -72,6 +72,10 @@ window.setInterval(timerHit, 20);
 
 
 function timerHit(){
+
+  var clientTime = moment(window.kinda_ntp.time());
+  document.querySelector('#clientTime').innerHTML = clientTime.format(); 
+
   var drawStart = new Date().getTime();
 
   draw();

@@ -3,7 +3,7 @@
   
   var kinda_ntp = {};
   var time_sync_interval = 500;
-  var time_sync_count = 50;
+  var time_sync_count = 10;
   kinda_ntp.time_sync_index = 0; // global var
   var time_sync_array = new Array();
   kinda_ntp.time_sync_correction = 0;
