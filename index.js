@@ -16,17 +16,17 @@ console.log("websocket server created")
 
 var globalCounter = 0;
 var clientCount = 0; // poor-mans non-scalable db
-var color = getRandomColor();
+//var color = getRandomColor();
 var allClients = {};
 
 function colorLoop() {
-  	color = getRandomColor();
+  	//color = getRandomColor();
 
-  	var serverData = [new Date(), clientCount, color];
+  	//var serverData = [new Date(), clientCount, color];
 
   	// send to all clients
-	  for (conn in allClients)
-		  allClients[conn].send(JSON.stringify(serverData));
+	  //for (conn in allClients)
+		//  allClients[conn].send(JSON.stringify(serverData));
 
 }
 
@@ -70,7 +70,7 @@ wss.on("connection", function(ws) {
   ws.on("close", function() {
     clientCount--;
     delete allClients[ws.id];
-    console.log("websocket connection closed, total " + clientCount)
+    console.log("websocket connection closed, total " + clientCount);
   })
 })
 
