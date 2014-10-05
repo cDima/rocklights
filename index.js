@@ -56,10 +56,12 @@ wss.on("connection", function(ws) {
 
     if (data.type === "get_time"){
       // respond with date
-      color = getRandomColor();
+      //color = getRandomColor();
       var serverData = JSON.stringify({ server_transmit_time : Date.now(),
                                 client_transmit_time : data.client_transmit_time, 
-                                clientCount: clientCount, color: color });
+                                clientCount: clientCount, 
+                                //color: color 
+                              });
       ws.send(serverData);
       console.log(serverData);
     }
@@ -69,10 +71,10 @@ wss.on("connection", function(ws) {
     clientCount--;
     delete allClients[ws.id];
     console.log("websocket connection closed, total " + clientCount)
-    //clearInterval(id)
   })
 })
 
+/*
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -81,3 +83,4 @@ function getRandomColor() {
     }
     return color;
 }
+*/

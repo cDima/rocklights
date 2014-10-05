@@ -4,62 +4,58 @@ var host = location.origin.replace(/^http/, 'ws')
 
 moment.defaultFormat = 'h:mm:ss:SSS a';
 
-var timeBefore = new moment();
-document.querySelector('#serverTime').innerHTML = timeBefore.format();
+//var timeBefore = new moment();
+//document.querySelector('#serverTime').innerHTML = timeBefore.format();
 
-//try {
-  var ws = new WebSocket(host);
-
-  
-  function requestServerTime() {
-    ws.send(JSON.stringify({ type: "get_time", client_transmit_time: Date.now()}));
-  }
-
-  ws.onopen = function (event) {
-
-    // start sync
-    window.kinda_ntp.init(requestServerTime);
-  }
+var ws = new WebSocket(host);
 
 
-  ws.onmessage = function (event) {
+function requestServerTime() {
+  ws.send(JSON.stringify({ type: "get_time", client_transmit_time: Date.now()}));
+}
 
-    var serverData = JSON.parse(event.data);
+ws.onopen = function (event) {
 
-    // save time to ntp for approx correction
-    kinda_ntp.new_time_sync(serverData.client_transmit_time, new Date().getTime(), serverData.server_transmit_time);
-
-    // multiple values:
-    var serverTime = moment(serverData.server_transmit_time);
-    var clientTime = moment(window.kinda_ntp.time());
-    var clientTimeDiff = window.kinda_ntp.time_sync_correction;
-    var clientCount = serverData.clientCount;
-    var color = serverData.color;
-    var synccount = kinda_ntp.time_sync_index;
-    //var li = document.createElement('li');
-    //li.innerHTML = JSON.parse(event.data);
-
-    var setColor = setTimeout(function() {
-        document.body.style.backgroundColor=color;
-      }, 1000)
+  // start sync
+  window.kinda_ntp.init(requestServerTime);
+}
 
 
-    document.querySelector('#clientTime').innerHTML = clientTime.format();
-    document.querySelector('#serverTime').innerHTML =  serverTime.format();
-    //document.querySelector('#serverApprox').innerHTML = serverApprox.format();  
-    document.querySelector('#synccount').innerHTML = synccount;  
-    document.querySelector('#clientTimeDiff').innerHTML = clientTimeDiff;  
-    document.querySelector('#clientCount').innerHTML = clientCount;
-    document.querySelector('#color').innerHTML = color;
+ws.onmessage = function (event) {
 
-  }
- 
+  var serverData = JSON.parse(event.data);
 
-//} catch (ex)
-//{
-  // localhost would fail 
-//}
+  // save time to ntp for approx correction
+  kinda_ntp.new_time_sync(serverData.client_transmit_time, new Date().getTime(), serverData.server_transmit_time);
 
+  //var clientTimeDiff = (window.kinda_ntp.time_sync_correction / 100).toPrecision(3);
+  var clientTimeDiff = moment(Date.now()).diff(window.kinda_ntp.time()) + "ms";
+  var clientCount = serverData.clientCount;
+  //var color = serverData.color;
+  var synccount = (kinda_ntp.time_sync_index + 1) + "/" + kinda_ntp.time_sync_count;
+  //var li = document.createElement('li');
+  //li.innerHTML = JSON.parse(event.data);
+
+  //var setColor = setTimeout(function() {
+  //    document.body.style.backgroundColor=color;
+  //  }, 1000)
+
+
+  //document.querySelector('#serverTime').innerHTML =  serverTime.format();
+  //document.querySelector('#serverApprox').innerHTML = serverApprox.format();  
+  document.querySelector('#synccount').innerHTML = synccount;  
+  document.querySelector('#clientTimeDiff').innerHTML = clientTimeDiff;  
+  document.querySelector('#clientCount').innerHTML = clientCount;
+  //document.querySelector('#color').innerHTML = color;
+}
+
+ function updateTime() {
+  // multiple values:
+  //var serverTime = moment(serverData.server_transmit_time);
+  var clientTime = moment(window.kinda_ntp.time());
+  var precision = kinda_ntp.time_precision;
+  document.querySelector('#clientTime').innerHTML = clientTime.format() + " ±" + precision + "ms";
+}
 
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
@@ -73,8 +69,7 @@ window.setInterval(timerHit, 20);
 
 function timerHit(){
 
-  var clientTime = moment(window.kinda_ntp.time());
-  document.querySelector('#clientTime').innerHTML = clientTime.format(); 
+  updateTime();
 
   var drawStart = new Date().getTime();
 
@@ -83,7 +78,7 @@ function timerHit(){
   var drawEnd = new Date().getTime();
   var drawTime = drawEnd - drawStart;
 
-  document.querySelector('#drawlag').innerHTML = drawTime;
+  //document.querySelector('#drawlag').innerHTML = drawTime;
 }
 
 function getRadius(){
